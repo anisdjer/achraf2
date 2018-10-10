@@ -9,7 +9,6 @@ cache:
 env:
   global:
     - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
-    - SYMFONY_PHPUNIT_VERSION="6.3"
 
 matrix:
   fast_finish: true
@@ -42,5 +41,3 @@ script:
   - ./bin/console security:check --end-point=http://security.sensiolabs.org/check_lock
   # this checks that the composer.json and composer.lock files are valid
   - composer validate --strict
-  # this checks that Doctrine's mapping configurations are valid
-  - ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction

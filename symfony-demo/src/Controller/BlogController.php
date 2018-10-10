@@ -17,14 +17,15 @@ use App\Events;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -37,9 +38,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/", defaults={"page": "1", "_format"="html"}, methods={"GET"}, name="blog_index")
-     * @Route("/rss.xml", defaults={"page": "1", "_format"="xml"}, methods={"GET"}, name="blog_rss")
-     * @Route("/page/{page}", defaults={"_format"="html"}, requirements={"page": "[1-9]\d*"}, methods={"GET"}, name="blog_index_paginated")
+     * @Route("/", defaults={"page": "1", "_format"="html"}, name="blog_index")
+     * @Route("/rss.xml", defaults={"page": "1", "_format"="xml"}, name="blog_rss")
+     * @Route("/page/{page}", defaults={"_format"="html"}, requirements={"page": "[1-9]\d*"}, name="blog_index_paginated")
+     * @Method("GET")
      * @Cache(smaxage="10")
      *
      * NOTE: For standard formats, Symfony will also automatically choose the best
@@ -57,7 +59,8 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/posts/{slug}", methods={"GET"}, name="blog_post")
+     * @Route("/posts/{slug}", name="blog_post")
+     * @Method("GET")
      *
      * NOTE: The $post controller argument is automatically injected by Symfony
      * after performing a database query looking for a Post with the 'slug'
@@ -77,8 +80,9 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/comment/{postSlug}/new", methods={"POST"}, name="comment_new")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @Route("/comment/{postSlug}/new", name="comment_new")
+     * @Method("POST")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
      *
      * NOTE: The ParamConverter mapping is required because the route parameter
@@ -141,7 +145,8 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/search", methods={"GET"}, name="blog_search")
+     * @Route("/search", name="blog_search")
+     * @Method("GET")
      */
     public function search(Request $request, PostRepository $posts): Response
     {
@@ -156,10 +161,10 @@ class BlogController extends AbstractController
         $results = [];
         foreach ($foundPosts as $post) {
             $results[] = [
-                'title' => htmlspecialchars($post->getTitle(), ENT_COMPAT | ENT_HTML5),
+                'title' => htmlspecialchars($post->getTitle()),
                 'date' => $post->getPublishedAt()->format('M d, Y'),
-                'author' => htmlspecialchars($post->getAuthor()->getFullName(), ENT_COMPAT | ENT_HTML5),
-                'summary' => htmlspecialchars($post->getSummary(), ENT_COMPAT | ENT_HTML5),
+                'author' => htmlspecialchars($post->getAuthor()->getFullName()),
+                'summary' => htmlspecialchars($post->getSummary()),
                 'url' => $this->generateUrl('blog_post', ['slug' => $post->getSlug()]),
             ];
         }

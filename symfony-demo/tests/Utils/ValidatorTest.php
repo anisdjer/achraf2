@@ -95,7 +95,7 @@ class ValidatorTest extends TestCase
         $this->assertSame($test, $this->object->validateFullName($test));
     }
 
-    public function testValidateFullNameEmpty()
+    public function testValidateEmailFullName()
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The full name can not be empty.');

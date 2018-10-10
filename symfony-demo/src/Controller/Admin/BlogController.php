@@ -15,13 +15,13 @@ use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use App\Utils\Slugger;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controller used to manage blog contents in the backend.
@@ -51,8 +51,9 @@ class BlogController extends AbstractController
      *     could move this annotation to any other controller while maintaining
      *     the route name and therefore, without breaking any existing link.
      *
-     * @Route("/", methods={"GET"}, name="admin_index")
-     * @Route("/", methods={"GET"}, name="admin_post_index")
+     * @Route("/", name="admin_index")
+     * @Route("/", name="admin_post_index")
+     * @Method("GET")
      */
     public function index(PostRepository $posts): Response
     {
@@ -64,7 +65,8 @@ class BlogController extends AbstractController
     /**
      * Creates a new Post entity.
      *
-     * @Route("/new", methods={"GET", "POST"}, name="admin_post_new")
+     * @Route("/new", name="admin_post_new")
+     * @Method({"GET", "POST"})
      *
      * NOTE: the Method annotation is optional, but it's a recommended practice
      * to constraint the HTTP methods each controller responds to (by default
@@ -114,12 +116,13 @@ class BlogController extends AbstractController
     /**
      * Finds and displays a Post entity.
      *
-     * @Route("/{id}", requirements={"id": "\d+"}, methods={"GET"}, name="admin_post_show")
+     * @Route("/{id}", requirements={"id": "\d+"}, name="admin_post_show")
+     * @Method("GET")
      */
     public function show(Post $post): Response
     {
         // This security check can also be performed
-        // using an annotation: @IsGranted("show", subject="post")
+        // using an annotation: @Security("is_granted('show', post)")
         $this->denyAccessUnlessGranted('show', $post, 'Posts can only be shown to their authors.');
 
         return $this->render('admin/blog/show.html.twig', [
@@ -130,11 +133,13 @@ class BlogController extends AbstractController
     /**
      * Displays a form to edit an existing Post entity.
      *
-     * @Route("/{id}/edit", requirements={"id": "\d+"}, methods={"GET", "POST"}, name="admin_post_edit")
-     * @IsGranted("edit", subject="post", message="Posts can only be edited by their authors.")
+     * @Route("/{id}/edit", requirements={"id": "\d+"}, name="admin_post_edit")
+     * @Method({"GET", "POST"})
      */
     public function edit(Request $request, Post $post): Response
     {
+        $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -156,8 +161,9 @@ class BlogController extends AbstractController
     /**
      * Deletes a Post entity.
      *
-     * @Route("/{id}/delete", methods={"POST"}, name="admin_post_delete")
-     * @IsGranted("delete", subject="post")
+     * @Route("/{id}/delete", name="admin_post_delete")
+     * @Method("POST")
+     * @Security("is_granted('delete', post)")
      *
      * The Security annotation value is an expression (if it evaluates to false,
      * the authorization mechanism will prevent the user accessing this resource).
