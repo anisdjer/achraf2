@@ -15,3 +15,11 @@ a1e7c0,127.0.0.1,GET,http://symfony.localhost/_fragment?_path=_locale%3Dfr%26_fo
 9d3a01,172.27.0.1,POST,http://symfony.localhost/fr/login,1539168900,,302
 ea93a6,127.0.0.1,GET,http://symfony.localhost/_fragment?_path=_locale%3Dfr%26_format%3Dhtml%26_controller%3DSymfony%255CBundle%255CFrameworkBundle%255CController%255CTemplateController%253A%253AtemplateAction,1539168901,e4b1a0,200
 e4b1a0,172.27.0.1,GET,http://symfony.localhost/fr/admin/post/,1539168901,,200
+333cae,172.28.0.1,GET,http://symfony.localhost/fr,1539169627,,200
+8dd86e,172.29.0.1,GET,http://symfony.localhost/fr,1539169692,,200
+426ca2,172.29.0.1,GET,http://symfony.localhost/fr/admin/post/,1539169710,,302
+e774a8,127.0.0.1,GET,http://symfony.localhost/_fragment?_path=_locale%3Dfr%26_format%3Dhtml%26_controller%3DSymfony%255CBundle%255CFrameworkBundle%255CController%255CTemplateController%253A%253AtemplateAction,1539169710,fee100,200
+fee100,172.29.0.1,GET,http://symfony.localhost/fr/login,1539169710,,200
+cbe316,172.29.0.1,POST,http://symfony.localhost/fr/login,1539169718,,302
+d777cd,127.0.0.1,GET,http://symfony.localhost/_fragment?_path=_locale%3Dfr%26_format%3Dhtml%26_controller%3DSymfony%255CBundle%255CFrameworkBundle%255CController%255CTemplateController%253A%253AtemplateAction,1539169718,154f5a,200
+154f5a,172.29.0.1,GET,http://symfony.localhost/fr/admin/post/,1539169718,,200
