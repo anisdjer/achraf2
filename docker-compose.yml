@@ -1,15 +1,15 @@
 version: '2'
 
 services:
-    db:
-        image: mysql
-        volumes:
-            - "./.data/db:/var/lib/mysql"
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#    db:
+#        image: mysql
+#        volumes:
+#            - "./.data/db:/var/lib/mysql"
+#        environment:
+#            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#            MYSQL_DATABASE: ${MYSQL_DATABASE}
+#            MYSQL_USER: ${MYSQL_USER}
+#            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     php:
         build:
             context: php7-fpm
@@ -27,12 +27,13 @@ services:
         volumes:
             - ./logs/nginx/:/var/log/nginx
     elk:
-        image: willdurand/elk
+        image: willdurand/elk:kibana-4.1.2
         ports:
             - 81:80
         volumes:
             - ./elk/logstash:/etc/logstash
             - ./elk/logstash/patterns:/opt/logstash/patterns
+            - ./.data/elk/elasticsearch:/data
         volumes_from:
             - php
             - nginx
