@@ -1,4 +1,10 @@
-# Docker Symfony (PHP7-FPM - NGINX - MySQL - ELK)
+docker stack
+==============
+sources
+- https://github.com/eko/docker-symfony.git
+- https://github.com/deviantony/docker-elk
+
+## Docker Symfony (PHP7-FPM - NGINX - MySQL - ELK)
 
 [![Build Status](https://travis-ci.org/maxpou/docker-symfony.svg?branch=master)](https://travis-ci.org/maxpou/docker-symfony)
 
@@ -6,7 +12,7 @@
 
 Docker-symfony gives you everything you need for developing Symfony application. This complete stack run with docker and [docker-compose (1.7 or higher)](https://docs.docker.com/compose/).
 
-## Installation
+### Installation
 
 1. Create a `.env` from the `.env.dist` file. Adapt it according to your symfony application
 
@@ -59,7 +65,7 @@ Docker-symfony gives you everything you need for developing Symfony application.
 
 5. Enjoy :-)
 
-## Usage
+### Usage
 
 Just run `docker-compose up -d`, then:
 
@@ -68,11 +74,11 @@ Just run `docker-compose up -d`, then:
 * Logs (Kibana): [symfony.local:81](http://symfony.local:81)
 * Logs (files location): logs/nginx and logs/symfony
 
-## Customize
+### Customize
 
 If you want to add optionnals containers like Redis, PHPMyAdmin... take a look on [doc/custom.md](doc/custom.md).
 
-## How it works?
+### How it works?
 
 Have a look at the `docker-compose.yml` file, here are the `docker-compose` built images:
 
@@ -93,7 +99,7 @@ dockersymfony_nginx_1         nginx                            Up      443/tcp, 
 dockersymfony_php_1           php-fpm                          Up      0.0.0.0:9000->9000/tcp      
 ```
 
-## Useful commands
+### Useful commands
 
 ```bash
 # bash commands
@@ -130,7 +136,7 @@ $ docker rm $(docker ps -aq)
 $ docker rmi $(docker images -q)
 ```
 
-## FAQ
+### FAQ
 
 * Got this error: `ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
 If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.` ?  
@@ -142,7 +148,7 @@ Run `docker-compose up -d` instead.
 Xdebug is configured out of the box!
 Just config your IDE to connect port  `9001` and id key `PHPSTORM`
 
-## Contributing
+### Contributing
 
 First of all, **thank you** for contributing ♥  
 If you find any typo/misconfiguration/... please send me a PR or open an issue. You can also ping me on [twitter](https://twitter.com/_maxpou).  

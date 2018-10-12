@@ -27,9 +27,10 @@ services:
         volumes:
             - ./logs/nginx/:/var/log/nginx
     elk:
-        image: willdurand/elk:kibana-4.1.2
+        image: willdurand/elk
         ports:
             - 81:80
+            - 9200:9200
         volumes:
             - ./elk/logstash:/etc/logstash
             - ./elk/logstash/patterns:/opt/logstash/patterns
